@@ -22,7 +22,7 @@ public class ContaServiceImpl implements ContaService {
         contaRepository
                 .findById(contaEntity.getNumeroConta())
                 .ifPresentOrElse(
-                        conta -> { throw new RuntimeException(); },
+                        conta -> { throw new IllegalArgumentException(); },
                         () -> { contaRepository.save(contaEntity); }
                 );
     }

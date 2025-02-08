@@ -1,8 +1,11 @@
-package com.amandazaine.api_gestao_bancaria.strategy;
+package com.amandazaine.api_gestao_bancaria.service;
 
 import com.amandazaine.api_gestao_bancaria.dto.ContaDTO;
 import com.amandazaine.api_gestao_bancaria.dto.TransacaoDTO;
-import com.amandazaine.api_gestao_bancaria.service.TransacaoService;
+import com.amandazaine.api_gestao_bancaria.strategy.impl.CartaoCreditoStrategy;
+import com.amandazaine.api_gestao_bancaria.strategy.impl.CartaoDebitoStrategy;
+import com.amandazaine.api_gestao_bancaria.strategy.impl.PixStrategy;
+import com.amandazaine.api_gestao_bancaria.strategy.TransacaoStrategy;
 
 import java.util.HashMap;
 import java.util.Map;

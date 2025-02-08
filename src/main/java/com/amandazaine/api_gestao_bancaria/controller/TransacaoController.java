@@ -1,6 +1,6 @@
 package com.amandazaine.api_gestao_bancaria.controller;
 
-import com.amandazaine.api_gestao_bancaria.controller.transacao_strategy.TransacaoContext;
+import com.amandazaine.api_gestao_bancaria.service.TransacaoContext;
 import com.amandazaine.api_gestao_bancaria.dto.ContaDTO;
 import com.amandazaine.api_gestao_bancaria.dto.TransacaoDTO;
 import com.amandazaine.api_gestao_bancaria.service.TransacaoService;

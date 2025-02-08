@@ -3,6 +3,8 @@ package com.amandazaine.api_gestao_bancaria.entity;
 import com.amandazaine.api_gestao_bancaria.dto.ContaDTO;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "conta")
 public class ContaEntity {
@@ -38,5 +40,18 @@ public class ContaEntity {
 
     public void setSaldo(Float saldo) {
         this.saldo = saldo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContaEntity that = (ContaEntity) o;
+        return Objects.equals(numeroConta, that.numeroConta) && Objects.equals(saldo, that.saldo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numeroConta, saldo);
     }
 }

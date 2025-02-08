@@ -1,7 +1,6 @@
 package com.amandazaine.api_gestao_bancaria.controller;
 
 import com.amandazaine.api_gestao_bancaria.dto.ContaDTO;
-import com.amandazaine.api_gestao_bancaria.entity.ContaEntity;
 import com.amandazaine.api_gestao_bancaria.service.ContaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class ContaController {
         try {
             contaService.saveConta(contaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
-        } catch (RuntimeException runtimeException) {
+        } catch (IllegalArgumentException illegalArgumentException) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
