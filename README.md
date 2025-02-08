@@ -45,6 +45,7 @@ docker compose -f ./docker-compose.yml up
 
 
 5. Depois de concluído, você pode acessar a aplicação através do Postman:
+
    6. Exemplo de como criar uma nova conta: 
    
    ```
