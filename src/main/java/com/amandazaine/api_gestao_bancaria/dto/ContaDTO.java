@@ -3,6 +3,8 @@ package com.amandazaine.api_gestao_bancaria.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 @JsonInclude
 public class ContaDTO {
 
@@ -33,5 +35,18 @@ public class ContaDTO {
 
     public void setSaldo(Float saldo) {
         this.saldo = saldo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContaDTO contaDTO = (ContaDTO) o;
+        return Objects.equals(numeroConta, contaDTO.numeroConta) && Objects.equals(saldo, contaDTO.saldo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numeroConta, saldo);
     }
 }

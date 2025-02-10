@@ -29,7 +29,7 @@ public class ContaController {
         try {
             ContaDTO conta = contaService.findConta(numeroConta);
             return ResponseEntity.status(HttpStatus.OK).body(conta);
-        } catch (RuntimeException runtimeException) {
+        } catch (IllegalArgumentException illegalArgumentException) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

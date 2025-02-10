@@ -16,7 +16,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 
-//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class ContaServiceImplTest {
 
@@ -26,18 +25,17 @@ public class ContaServiceImplTest {
     @InjectMocks
     private ContaServiceImpl contaService;
 
+    private ContaDTO contaDTO;
+    ContaEntity contaEntityTest;
+
+    @BeforeEach
+    void setUp() {
+        contaDTO  = new ContaDTO(1111, 100f);
+        contaEntityTest = new ContaEntity(contaDTO);
+    }
+
     @Nested
     class saveConta {
-
-        private ContaDTO contaDTO;
-        ContaEntity contaEntityTest;
-
-        @BeforeEach
-        void setUp() {
-            contaDTO  = new ContaDTO(1111, 100f);
-            contaEntityTest = new ContaEntity(contaDTO);
-        }
-
         @Test
         @DisplayName("Deve criar um conta com sucesso")
         public void deveCriarUmaConta() {
@@ -57,14 +55,41 @@ public class ContaServiceImplTest {
 
             Mockito.doReturn(contaEntityOptional).when(contaRepository).findById(contaDTO.getNumeroConta());
 
-            //Mockito.when(contaRepository.findById(contaDTO.getNumeroConta())).thenThrow(IllegalArgumentException.class);
-
             Assertions.assertThrows(
                     IllegalArgumentException.class,
                     () -> contaService.saveConta(contaDTO)
             );
 
             Mockito.verify(contaRepository, never()).save(any(ContaEntity.class));
+        }
+    }
+
+    @Nested
+    class findConta {
+        @Test
+        @DisplayName("Deve retornar uma ContaDTO ao buscar uma conta que já exista")
+        public void deveEncontrarUmConta() {
+            Optional<ContaEntity> contaEntityOptional = Optional.ofNullable(contaEntityTest);
+
+            Mockito.doReturn(contaEntityOptional).when(contaRepository).findById(contaDTO.getNumeroConta());
+
+            ContaDTO contaDtoRetorno = contaService.findConta(contaDTO.getNumeroConta());
+
+            Assertions.assertEquals(contaDTO, contaDtoRetorno);
+
+        }
+
+        @Test
+        @DisplayName("Deve lançar uma exceção ao buscar uma conta inexistente")
+        public void deveLancarExcecaoAoBuscarUmaContaInexistente() {
+            Optional<ContaEntity> contaEntityOptional = Optional.empty();
+
+            Mockito.doReturn(contaEntityOptional).when(contaRepository).findById(contaDTO.getNumeroConta());
+
+            Assertions.assertThrows(
+                    IllegalArgumentException.class,
+                    () -> contaService.findConta(contaDTO.getNumeroConta())
+            );
         }
     }
 

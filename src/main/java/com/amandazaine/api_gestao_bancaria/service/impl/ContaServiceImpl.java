@@ -35,7 +35,7 @@ public class ContaServiceImpl implements ContaService {
                 .findById(numeroConta)
                 .ifPresentOrElse(
                         conta -> { contaEntityAtomic.set(conta); },
-                        () -> { throw new RuntimeException(); }
+                        () -> { throw new IllegalArgumentException(); }
                 );
 
         ContaEntity contaEntity = contaEntityAtomic.get();
