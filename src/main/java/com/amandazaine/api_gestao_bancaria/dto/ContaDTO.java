@@ -1,5 +1,6 @@
 package com.amandazaine.api_gestao_bancaria.dto;
 
+import com.amandazaine.api_gestao_bancaria.entity.ContaEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,6 +20,11 @@ public class ContaDTO {
     public ContaDTO(Integer numeroConta, Float saldo) {
         this.numeroConta = numeroConta;
         this.saldo = saldo;
+    }
+
+    public ContaDTO(ContaEntity contaEntity) {
+        this.numeroConta = contaEntity.getNumeroConta();
+        this.saldo = contaEntity.getSaldo();
     }
 
     public Integer getNumeroConta() {

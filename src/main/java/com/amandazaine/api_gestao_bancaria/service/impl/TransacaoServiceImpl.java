@@ -15,22 +15,28 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TransacaoServiceImpl implements TransacaoService {
 
     @Autowired
-    ContaRepository contaRepository;
+    private ContaRepository contaRepository;
 
     @Autowired
-    TransacaoRepository transacaoRepository;
+    private TransacaoRepository transacaoRepository;
+
+    private final String CODIGO_PIX = "P";
+    private final String CODIGO_CREDITO = "C";
+    private final String CODIGO_DEBITO = "D";
+    private final Float TAXA_CREDITO = 0.05f;
+    private final Float TAXA_DEBITO = 0.03f;
 
     @Override
     public ContaDTO realizarTransacaoPix(Integer numeroConta, Float valor) {
-        AtomicReference<ContaEntity> contaEntityAtomic = new AtomicReference<>();
 
-        TransacaoEntity transacao = new TransacaoEntity("P", numeroConta, valor);
+        AtomicReference<ContaEntity> contaEntityAtomic = new AtomicReference<>();
 
         contaRepository
                 .findById(numeroConta)
                 .ifPresentOrElse(
                         conta -> {
-                            if(conta.getSaldo() !=0  && conta.getSaldo() >= valor) {
+                            if(conta.getSaldo() != 0  && conta.getSaldo() >= valor) {
+                                TransacaoEntity transacao = new TransacaoEntity(CODIGO_PIX, numeroConta, valor);
                                 float novoSaldo = conta.getSaldo() - valor;
                                 conta.setSaldo(novoSaldo);
                                 contaRepository.save(conta);
@@ -43,24 +49,21 @@ public class TransacaoServiceImpl implements TransacaoService {
                         () -> { throw new NullPointerException(); }
                 );
 
-        ContaEntity contaEntity = contaEntityAtomic.get();
-        ContaDTO contaDTO = new ContaDTO(contaEntity.getNumeroConta(), contaEntity.getSaldo());
-        return contaDTO;
+        return new ContaDTO(contaEntityAtomic.get());
     }
 
     @Override
     public ContaDTO realizarTransacaoCartaoCredito(Integer numeroConta, Float valor) {
-        Float valorComTaxaCredito = valor + (valor * 0.05f);
+        Float valorComTaxaCredito = valor + (valor * TAXA_CREDITO);
 
         AtomicReference<ContaEntity> contaEntityAtomic = new AtomicReference<>();
-
-        TransacaoEntity transacao = new TransacaoEntity("C", numeroConta, valor);
 
         contaRepository
                 .findById(numeroConta)
                 .ifPresentOrElse(
                         conta -> {
                             if(conta.getSaldo() != 0 && conta.getSaldo() >= valorComTaxaCredito) {
+                                TransacaoEntity transacao = new TransacaoEntity(CODIGO_CREDITO, numeroConta, valor);
                                 float novoSaldo = conta.getSaldo() - valorComTaxaCredito;
                                 conta.setSaldo(novoSaldo);
                                 contaRepository.save(conta);
@@ -73,24 +76,21 @@ public class TransacaoServiceImpl implements TransacaoService {
                         () -> { throw new NullPointerException(); }
                 );
 
-        ContaEntity contaEntity = contaEntityAtomic.get();
-        ContaDTO contaDTO = new ContaDTO(contaEntity.getNumeroConta(), contaEntity.getSaldo());
-        return contaDTO;
+        return new ContaDTO(contaEntityAtomic.get());
     }
 
     @Override
     public ContaDTO realizarTransacaoCartaoDebito(Integer numeroConta, Float valor) {
-        Float valorComTaxaDebito = valor + (valor * 0.03f);
+        Float valorComTaxaDebito = valor + (valor * TAXA_DEBITO);
 
         AtomicReference<ContaEntity> contaEntityAtomic = new AtomicReference<>();
-
-        TransacaoEntity transacao = new TransacaoEntity("D", numeroConta, valor);
 
         contaRepository
                 .findById(numeroConta)
                 .ifPresentOrElse(
                         conta -> {
                             if(conta.getSaldo() != 0 && conta.getSaldo() >= valorComTaxaDebito) {
+                                TransacaoEntity transacao = new TransacaoEntity(CODIGO_DEBITO, numeroConta, valor);
                                 float novoSaldo = conta.getSaldo() - valorComTaxaDebito;
                                 conta.setSaldo(novoSaldo);
                                 contaRepository.save(conta);
@@ -103,8 +103,6 @@ public class TransacaoServiceImpl implements TransacaoService {
                         () -> { throw new NullPointerException(); }
                 );
 
-        ContaEntity contaEntity = contaEntityAtomic.get();
-        ContaDTO contaDTO = new ContaDTO(contaEntity.getNumeroConta(), contaEntity.getSaldo());
-        return contaDTO;
+        return new ContaDTO(contaEntityAtomic.get());
     }
 }

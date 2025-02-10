@@ -25,7 +25,8 @@ public class TransacaoContext {
     }
 
     public ContaDTO executarTransacao(TransacaoDTO transacaoDTO) {
-        TransacaoStrategy strategy = getStrategy(transacaoDTO.getFormaPagamento());
+        String formaPagamento = transacaoDTO.getFormaPagamento().trim().toUpperCase();
+        TransacaoStrategy strategy = getStrategy(formaPagamento);
 
         if (strategy != null) {
             return strategy.realizarTransacao(transacaoDTO.getNumeroConta(), transacaoDTO.getValor());
